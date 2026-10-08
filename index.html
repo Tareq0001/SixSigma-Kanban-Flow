@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Six Sigma Kanban Flow V2 | Tactile Neo-Brutalist Industrial Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800;900&family=JetBrains+Mono:wght@600;700;800&family=Tajawal:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="brutalist-theme">
+  <!-- Hazard Caution Stripes Bar -->
+  <div class="hazard-stripes-bar"></div>
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="brutalist-sticker sticker-yellow">
+        <span>⚡ LEAN SHOPFLOOR DISPATCH · WIP CONTROL</span>
+      </div>
+      <h1 class="brand-title">
+        <span class="title-main" data-i18n="appTitle">KANBAN FLOW</span>
+        <span class="title-badge" data-i18n="appSub">NEO-BRUTALIST V2</span>
+      </h1>
+      <p class="brand-desc" data-i18n="appDesc">Dynamic Theory of Constraints (TOC), Little's Law, Takt vs Cycle Time & Live Conveyor Simulator</p>
+    </div>
+    
+    <div class="header-right">
+      <div class="brutalist-status-pill">
+        <span class="bsp-label" data-i18n="flowStateLabel">LINE STATUS:</span>
+        <span class="bsp-val" id="lineStateBadge">SMOOTH FLOW</span>
+      </div>
+      <button id="langToggle" class="btn-brutalist btn-white">
+        <span id="langLabel">العربية</span>
+      </button>
+      <button id="exportReportBtn" class="btn-brutalist btn-yellow">
+        <span data-i18n="exportBtn">EXPORT AUDIT REPORT</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Presets Bar -->
+  <section class="brutalist-card presets-section">
+    <div class="presets-container">
+      <div class="presets-label-block">
+        <span class="sticker-tag">PRESETS</span>
+        <span class="preset-label" data-i18n="presetsLabel">LINE SCENARIOS:</span>
+      </div>
+      <div class="preset-buttons">
+        <button class="preset-btn active" data-preset="balanced">
+          <span>🟢</span>
+          <span data-i18n="presetBalanced">Balanced Flow (Little's Law Optimum)</span>
+        </button>
+        <button class="preset-btn" data-preset="bottleneck">
+          <span>🔴</span>
+          <span data-i18n="presetBottleneck">Station 2 Bottleneck (TOC Choke)</span>
+        </button>
+        <button class="preset-btn" data-preset="wip-overflow">
+          <span>⚠️</span>
+          <span data-i18n="presetWipOverflow">Excessive WIP Congestion (Long Lead Time)</span>
+        </button>
+      </div>
+
+      <div class="line-toggles">
+        <button id="toggleTOCBtn" class="btn-brutalist btn-mint">
+          <span data-i18n="tocBtn">DRUM-BUFFER-ROPE: ON</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- KPI Cards Grid -->
+  <section class="kpi-grid">
+    <div class="kpi-card card-yellow">
+      <div class="kpi-header">
+        <span class="kpi-tag">[WIP]</span>
+        <span class="kpi-label" data-i18n="kpiWip">Total Work-In-Progress</span>
+      </div>
+      <div class="kpi-val" id="kpiWip">14 units</div>
+      <span class="kpi-sub" id="kpiWipSub">Buffer utilization: 58%</span>
+    </div>
+
+    <div class="kpi-card card-mint">
+      <div class="kpi-header">
+        <span class="kpi-tag">[THROUGHPUT]</span>
+        <span class="kpi-label" data-i18n="kpiTh">Hourly Throughput (TH)</span>
+      </div>
+      <div class="kpi-val" id="kpiThroughput">45 pcs/h</div>
+      <span class="kpi-sub" data-i18n="kpiThSub">Paced by Bottleneck Station</span>
+    </div>
+
+    <div class="kpi-card card-coral">
+      <div class="kpi-header">
+        <span class="kpi-tag">[LEAD TIME]</span>
+        <span class="kpi-label" data-i18n="kpiLt">Manufacturing Lead Time</span>
+      </div>
+      <div class="kpi-val" id="kpiLeadTime">18.6 min</div>
+      <span class="kpi-sub" data-i18n="kpiLtSub">Little's Law: WIP / Throughput</span>
+    </div>
+
+    <div class="kpi-card card-purple">
+      <div class="kpi-header">
+        <span class="kpi-tag">[TAKT TIME]</span>
+        <span class="kpi-label" data-i18n="kpiTakt">Target Takt Time</span>
+      </div>
+      <div class="kpi-val" id="kpiTakt">80 sec</div>
+      <span class="kpi-sub" id="kpiTaktSub">Available time / Customer demand</span>
+    </div>
+  </section>
+
+  <!-- Interactive Studio Main Layout -->
+  <main class="studio-layout">
+    <!-- Left Column: Live Animated Conveyor & Station Buffers -->
+    <section class="brutalist-card conveyor-panel">
+      <div class="panel-header">
+        <div>
+          <span class="sticker-tag">LIVE SIMULATOR</span>
+          <h2 class="panel-title" data-i18n="conveyorTitle">Industrial Kanban Conveyor Line</h2>
+          <p class="panel-desc" data-i18n="conveyorDesc">Real-time particle batches streaming across 4 paced manufacturing cells.</p>
+        </div>
+      </div>
+
+      <div class="canvas-container">
+        <canvas id="conveyorCanvas"></canvas>
+      </div>
+
+      <!-- 4 Workstations Controls -->
+      <div class="stations-controls-grid" id="stationsGrid">
+        <!-- Injected via JS -->
+      </div>
+    </section>
+
+    <!-- Right Column: Takt vs Cycle Time Analysis Chart -->
+    <section class="brutalist-card chart-panel">
+      <div class="panel-header">
+        <div>
+          <span class="sticker-tag">PACING ANALYTICS</span>
+          <h2 class="panel-title" data-i18n="chartTitle">Station Cycle Time vs Takt Line</h2>
+          <p class="panel-desc" data-i18n="chartDesc">Stations exceeding Takt Time trigger bottleneck alarms and starved downstream cells.</p>
+        </div>
+      </div>
+
+      <div class="canvas-container">
+        <canvas id="taktCanvas"></canvas>
+      </div>
+
+      <div class="pacing-legend">
+        <div class="pl-item"><span class="pl-box box-green"></span><span data-i18n="plBalanced">Balanced Cycle Time</span></div>
+        <div class="pl-item"><span class="pl-box box-red"></span><span data-i18n="plBottleneck">Bottleneck (Over Takt)</span></div>
+        <div class="pl-item"><span class="pl-box box-takt"></span><span data-i18n="plTakt">Customer Takt Threshold</span></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Bottom Detailed Tabbed Analysis -->
+  <section class="brutalist-card detailed-section">
+    <div class="tabs-header">
+      <button class="tab-btn active" data-tab="tabTOC">
+        <span>🎯</span>
+        <span data-i18n="tabTOC">Goldratt's Drum-Buffer-Rope (TOC) Rules</span>
+      </button>
+      <button class="tab-btn" data-tab="tabLittlesLaw">
+        <span>📐</span>
+        <span data-i18n="tabLittles">Little's Law Validation (L = λW)</span>
+      </button>
+      <button class="tab-btn" data-tab="tabKaizen">
+        <span>🔧</span>
+        <span data-i18n="tabKaizen">Continuous Flow Kaizen Actions</span>
+      </button>
+    </div>
+
+    <div class="tabs-content">
+      <div class="tab-pane active" id="tabTOC">
+        <div class="toc-rules-grid">
+          <div class="toc-card">
+            <div class="toc-badge">THE DRUM</div>
+            <div class="toc-title" data-i18n="drumTitle">The Pacing Drum (Bottleneck)</div>
+            <p class="toc-desc" data-i18n="drumDesc">The slowest station determines the maximum throughput for the entire plant. Optimizing non-bottlenecks creates illusionary gains and builds excess WIP.</p>
+          </div>
+          <div class="toc-card">
+            <div class="toc-badge">THE BUFFER</div>
+            <div class="toc-title" data-i18n="bufferTitle">Time & Stock Buffer</div>
+            <p class="toc-desc" data-i18n="bufferDesc">Strategic WIP inventory placed directly upstream of the bottleneck to guarantee it never starves due to minor micro-stops.</p>
+          </div>
+          <div class="toc-card">
+            <div class="toc-badge">THE ROPE</div>
+            <div class="toc-title" data-i18n="ropeTitle">The Pull Rope (Kanban Signal)</div>
+            <p class="toc-desc" data-i18n="ropeDesc">Raw material release at Station 1 is strictly tied to consumption at the bottleneck, choking production when buffers are full.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane" id="tabLittlesLaw">
+        <div class="littles-box" id="littlesBox">
+          <!-- Injected via JS -->
+        </div>
+      </div>
+
+      <div class="tab-pane" id="tabKaizen">
+        <div class="kaizen-actions-grid" id="kaizenGrid">
+          <!-- Injected via JS -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="footer-left">
+      <span class="sticker-tag">LEAN SUITE V2</span>
+      <span data-i18n="footerStatus">TACTILE NEO-BRUTALIST INDUSTRIAL KANBAN ENGINE</span>
+    </div>
+    <div class="footer-right">
+      <span>Tareq0001 · Production Optimization Systems</span>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
